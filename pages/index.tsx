@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import * as React from "react";
 import Head from "next/head";
 import Nav from "../components/nav";
 import Cards from "../components/cards";
@@ -6,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import useSWR from "swr";
 import Container from "@mui/material/Container";
+import { useEffect } from "react";
 
 const testResponse = {
   kind: "youtube#searchListResponse",
@@ -214,6 +216,7 @@ const Home: NextPage = () => {
   //       <p>{data?.data?.error?.message}</p>
   //     </div>
   //   );
+
 
   return (
     <>

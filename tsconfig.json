@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "scripts/googleIdentityService.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "public/gis.js", "pages/index.tsx"],
   "exclude": ["node_modules"]
 }

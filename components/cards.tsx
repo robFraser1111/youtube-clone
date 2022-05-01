@@ -20,7 +20,7 @@ const MediaCard = (props: any) => {
       sx={{ justifyContent: "center", gap: "40px 20px" }}
     >
       {props.data.map((item: any, index: any) => (
-        <Link key={index} href={`watch/${item?.id?.videoId}`} passHref>
+        <Link key={index} href={`/watch/${item?.id?.videoId}`} passHref>
           <a>
             <Card sx={{ maxWidth: "480px" }}>
               <CardMedia
