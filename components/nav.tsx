@@ -20,6 +20,8 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 
 import youtubeLogo from "../public/yt_logo_rgb_dark.png";
 
+const jose = require("jose");
+
 const SearchWrapper = styled("div")(() => ({
   width: "100%",
 }));
@@ -59,7 +61,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function Nav() {
+export default function Nav(props: {
+  handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -158,6 +162,37 @@ export default function Nav() {
     </Menu>
   );
 
+  // Google login script
+  React.useEffect(() => {
+    function handleCredentialResponse(response: any) {
+      console.log("Encoded JWT ID token: " + response.credential);
+
+      // to decode the credential response.
+      const responsePayload = jose.decodeJwt(response.credential);
+
+      console.log("ID: " + responsePayload.sub);
+      console.log("Full Name: " + responsePayload.name);
+      console.log("Given Name: " + responsePayload.given_name);
+      console.log("Family Name: " + responsePayload.family_name);
+      console.log("Image URL: " + responsePayload.picture);
+      console.log("Email: " + responsePayload.email);
+    }
+    const onload = function () {
+      google.accounts.id.initialize({
+        client_id:
+          "1054045062799-s66i1vgtcg29cqlevk17i6lgm1htc9e4.apps.googleusercontent.com",
+        callback: handleCredentialResponse,
+      });
+      google.accounts.id.renderButton(
+        document.getElementById("buttonDiv"),
+        { theme: "outline", size: "large" } // customization attributes
+      );
+      google.accounts.id.prompt(); // also display the One Tap dialog
+    };
+
+    onload();
+  }, []);
+
   return (
     <>
       <AppBar color="primary" position="static">
@@ -187,6 +222,7 @@ export default function Nav() {
                 <SearchIcon />
               </SearchIconWrapper>
               <StyledInputBase
+                onChange={props.handleSearch}
                 fullWidth={true}
                 placeholder="Search…"
                 inputProps={{ "aria-label": "search" }}

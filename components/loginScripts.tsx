@@ -9,12 +9,13 @@ const loginScripts = () => {
         src="https://accounts.google.com/gsi/client"
         strategy="beforeInteractive"
       ></Script>
-      <Script
+      {/* <Script
         id="gsiScript"
         src="/gsi.js"
+        type="module"
         defer
         strategy="afterInteractive"
-      ></Script>
+      ></Script> */}
     </>
   );
 };

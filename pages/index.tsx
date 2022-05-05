@@ -204,19 +204,53 @@ const testResponse = {
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const Home: NextPage = () => {
-  // const { data, error } = useSWR("/api/default", fetcher);
+  const { data, error } = useSWR("/api/default", fetcher);
 
-  // if (error) return <div>Error...</div>;
-  // if (!data) return <div>Loading...</div>;
-  // if (data.data.error)
-  //   return (
-  //     <div>
-  //       {data?.data?.error?.code}
-  //       <br />
-  //       <p>{data?.data?.error?.message}</p>
-  //     </div>
-  //   );
+  // Handle search input
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
 
+    // setSearching(true);
+
+    // // Check if search term matches a name in the array
+    // setTimeout(function () {
+    //   const newData = data.filter((item: { name: string }) =>
+    //     item.name.includes(e.target.value.toLowerCase())
+    //   );
+
+    //   // Set filtered data to new array if search result contains any pokemon
+    //   if (newData.length > 0) {
+    //     setFilteredData(newData);
+    //   } else {
+    //     setFilteredData(initItem);
+    //   }
+
+    //   // Reset filtered data if there's no search term
+    //   if (e.target.value === "") {
+    //     setFilteredData(initItem);
+    //   }
+
+    //   // Error checking
+    //   if (e.target.value.length > 0 && newData.length === 0) {
+    //     setSearchError(true);
+    //   } else {
+    //     setSearchError(false);
+    //   }
+
+    //   setSearching(false);
+    // }, 1500);
+  };
+
+  if (error) return <div>Error...</div>;
+  if (!data) return <div>Loading...</div>;
+  if (data.data.error)
+    return (
+      <div>
+        {data?.data?.error?.code}
+        <br />
+        <p>{data?.data?.error?.message}</p>
+      </div>
+    );
 
   return (
     <>
@@ -226,8 +260,11 @@ const Home: NextPage = () => {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <Container maxWidth={false} disableGutters={true}>
-        <main style={{ margin: "40px" }}>
-          <Cards data={testResponse.items} />
+        <Nav handleSearch={handleSearch} />
+        <main>
+          <section style={{ margin: "40px" }}>
+            <Cards data={data.data.items} />
+          </section>
         </main>
       </Container>
     </>

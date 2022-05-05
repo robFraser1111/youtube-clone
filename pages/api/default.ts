@@ -4,7 +4,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
   const data = await fetch(
-    `https://youtube.googleapis.com/youtube/v3/search?part=snippet&key=${process.env.KEY}&relevanceLanguage=en`,
+    `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=20&playlistId=PLillGF-RfqbbnEGy3ROiLWk7JMCuSyQtX&key=${process.env.KEY}`,
     {
       method: "GET",
     }
