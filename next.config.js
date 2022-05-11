@@ -4,6 +4,7 @@ const nextConfig = {
   images: {
     domains: ["i.ytimg.com"],
   },
+  generateEtags: false,
 };
 
 module.exports = nextConfig;

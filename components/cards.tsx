@@ -24,7 +24,7 @@ const MediaCard = (props: any) => {
         margin: "0 auto",
       }}
     >
-      {props.data.map((item: any, index: any) => (
+      {props?.data?.map((item: any, index: any) => (
         <Link key={index} href={`/watch/${item?.id?.videoId}`} passHref>
           <a>
             <Card sx={{ maxWidth: "320px", backgroundColor: "transparent" }}>

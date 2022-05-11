@@ -1,10 +1,11 @@
 import Nav from "./nav";
-import LoginScripts from "./loginScripts";
+import Scripts from "./scripts";
 export default function Layout({ children }: any) {
   return (
     <>
+      <Nav />
       {children}
-      <LoginScripts />
+      <Scripts />
     </>
   );
 }

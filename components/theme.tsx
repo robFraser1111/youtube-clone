@@ -7,8 +7,8 @@ const Theme = createTheme({
       main: "#212121",
     },
     secondary: {
-        main: "#FF0000",
-    }
+      main: "#FF0000",
+    },
   },
   components: {
     // Name of the component
@@ -17,8 +17,8 @@ const Theme = createTheme({
         // Name of the slot
         root: {
           // Some CSS
-          border: '0',
-          boxShadow: 'none'
+          border: "0",
+          boxShadow: "none",
         },
       },
     },

@@ -1,4 +1,6 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import { styled, alpha } from "@mui/material/styles";
@@ -26,7 +28,7 @@ const SearchWrapper = styled("div")(() => ({
   width: "100%",
 }));
 
-const Search = styled("div")(({ theme }) => ({
+const Search = styled("form")(({ theme }) => ({
   position: "relative",
   maxWidth: "600px",
   margin: "0 auto",
@@ -42,10 +44,10 @@ const Search = styled("div")(({ theme }) => ({
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
+  // padding: theme.spacing(0, 2),
+  padding: "8px 16px",
+  // height: "100%",
+  // position: "absolute",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -54,19 +56,37 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
+    padding: theme.spacing(1, 2, 1, 2),
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    // paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
   },
 }));
 
-export default function Nav(props: {
-  handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}) {
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+export default function Nav() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const router = useRouter();
+
+  // Handle search input
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    console.log("Search term is " + e.target.value);
+  };
+
+  // Handle search submission
+  const submitSearch = (e: any) => {
+    e.preventDefault();
+    if (searchTerm !== "") {
+      router.push(`/search/${searchTerm}`);
+    } else {
+      return;
+    }
+  };
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -136,11 +156,7 @@ export default function Nav(props: {
         <p>Messages</p>
       </MenuItem>
       <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
+        <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
           <Badge badgeContent={17} color="error">
             <NotificationsIcon />
           </Badge>
@@ -148,13 +164,7 @@ export default function Nav(props: {
         <p>Notifications</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
+        <IconButton size="large" aria-label="account of current user" aria-controls="primary-search-account-menu" aria-haspopup="true" color="inherit">
           <AccountCircle />
         </IconButton>
         <p>Profile</p>
@@ -167,7 +177,6 @@ export default function Nav(props: {
     function handleCredentialResponse(response: any) {
       console.log("Encoded JWT ID token: " + response.credential);
 
-      // to decode the credential response.
       const responsePayload = jose.decodeJwt(response.credential);
 
       console.log("ID: " + responsePayload.sub);
@@ -179,15 +188,11 @@ export default function Nav(props: {
     }
     const onload = function () {
       google.accounts.id.initialize({
-        client_id:
-          "1054045062799-s66i1vgtcg29cqlevk17i6lgm1htc9e4.apps.googleusercontent.com",
+        client_id: "1054045062799-s66i1vgtcg29cqlevk17i6lgm1htc9e4.apps.googleusercontent.com",
         callback: handleCredentialResponse,
       });
-      google.accounts.id.renderButton(
-        document.getElementById("buttonDiv"),
-        { theme: "outline", size: "large" } // customization attributes
-      );
-      google.accounts.id.prompt(); // also display the One Tap dialog
+      google.accounts.id.renderButton(document.getElementById("buttonDiv"), { theme: "outline", size: "large" });
+      google.accounts.id.prompt();
     };
 
     onload();
@@ -197,39 +202,22 @@ export default function Nav(props: {
     <>
       <AppBar color="primary" position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
+          <IconButton size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }}>
             <MenuIcon />
           </IconButton>
           <Link href="/">
             <a>
-              <Image
-                src={youtubeLogo}
-                width={120}
-                height={27}
-                alt="YouTube Logo"
-              />
+              <Image src={youtubeLogo} width={120} height={27} alt="YouTube Logo" />
             </a>
           </Link>
           <SearchWrapper>
-            <Search>
+            <Search onSubmit={submitSearch} action="" sx={{ display: "flex", cursor: "pointer" }}>
+              <StyledInputBase onChange={handleSearch} fullWidth={true} placeholder="Search…" inputProps={{ "aria-label": "search" }} />
               <SearchIconWrapper>
-                <SearchIcon />
+                <SearchIcon onClick={submitSearch} />
               </SearchIconWrapper>
-              <StyledInputBase
-                onChange={props.handleSearch}
-                fullWidth={true}
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-              />
             </Search>
           </SearchWrapper>
-          <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <div id="buttonDiv"></div>
           </Box>
