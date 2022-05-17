@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
-  const data = await fetch(`https://www.googleapis.com/youtube/v3/videos?key=${process.env.KEY}&part=snippet&id=${id}`, {
+  const data = await fetch(`https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${id}&key=${process.env.KEY}`, {
     method: "GET",
   })
     .then((res) => res.json())

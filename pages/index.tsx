@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { Interweave, Markup } from "interweave";
 import Head from "next/head";
 import Cards from "../components/cards";
+import LoadingVideos from "../components/loadingVideos";
 import useSWR from "swr";
 import Container from "@mui/material/Container";
 import { Typography } from "@mui/material";
@@ -204,17 +205,7 @@ const Home: NextPage = () => {
     <Head>
       <title>YouTube clone</title>
       <meta name="description" content="The classic YouTube clone." />
-      <meta name="viewport" content="initial-scale=1, width=device-width" />
     </Head>
-  );
-
-  const loading = (
-    <>
-      <Skeleton variant="rectangular" animation="wave" sx={{ bgcolor: "grey.900" }} width={320} height={280} />
-      <Skeleton variant="rectangular" animation="wave" sx={{ bgcolor: "grey.900" }} width={320} height={280} />
-      <Skeleton variant="rectangular" animation="wave" sx={{ bgcolor: "grey.900" }} width={320} height={280} />
-      <Skeleton variant="rectangular" animation="wave" sx={{ bgcolor: "grey.900" }} width={320} height={280} />
-    </>
   );
 
   // Renders JSON data as JSX
@@ -234,9 +225,9 @@ const Home: NextPage = () => {
           <section style={{ margin: "40px" }}>
             <Typography align="center" variant="h4" sx={{ color: "#ffffff" }}>
               {data?.data?.hasOwnProperty("error") ? parseHtml(data?.data?.error?.message) : null}
-              {!data && loading}
               {error && <div>Error. Try reloading the page.</div>}
             </Typography>
+            {!data && <LoadingVideos amount={20} />}
             {data && <Cards data={data?.data?.items} />}
           </section>
         </main>

@@ -10,7 +10,11 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
-const MediaCard = (props: any) => {
+type Videos = {
+  data: [];
+};
+
+const MediaCard = (props: Videos) => {
   return (
     <Grid
       container
@@ -25,19 +29,15 @@ const MediaCard = (props: any) => {
       }}
     >
       {props?.data?.map((item: any, index: any) => (
-        <Link key={index} href={`/watch/${item?.id?.videoId}`} passHref>
+        <Link key={index} href={item?.kind === "youtube#searchResult" ? `/watch/${item?.id?.videoId}` : `/watch/${item?.snippet?.resourceId?.videoId}`} passHref>
           <a>
             <Card sx={{ maxWidth: "320px", backgroundColor: "transparent" }}>
-              <CardMedia
-                component="img"
-                image={item?.snippet?.thumbnails?.medium?.url}
-                alt={item?.snippet?.title}
-              />
+              <CardMedia component="img" image={item?.snippet?.thumbnails?.medium?.url} alt={item?.snippet?.title} />
               <CardContent>
-                <Typography gutterBottom variant="subtitle1" component="div" sx={{color: "#ffffff"}}>
+                <Typography gutterBottom variant="subtitle1" component="div" sx={{ color: "#ffffff" }}>
                   {item?.snippet?.title}
                 </Typography>
-                <Typography variant="body2" sx={{color: "#ffffff"}}>
+                <Typography variant="body2" sx={{ color: "#ffffff" }}>
                   {item?.snippet?.channelTitle}
                 </Typography>
               </CardContent>

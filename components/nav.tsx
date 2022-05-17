@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import { styled, alpha } from "@mui/material/styles";
+import Login from "./login";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -14,6 +15,7 @@ import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
@@ -76,6 +78,11 @@ export default function Nav() {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
     console.log("Search term is " + e.target.value);
+  };
+
+  // Clear search input
+  const clearSearch = () => {
+    setSearchTerm("");
   };
 
   // Handle search submission
@@ -172,32 +179,6 @@ export default function Nav() {
     </Menu>
   );
 
-  // Google login script
-  React.useEffect(() => {
-    function handleCredentialResponse(response: any) {
-      console.log("Encoded JWT ID token: " + response.credential);
-
-      const responsePayload = jose.decodeJwt(response.credential);
-
-      console.log("ID: " + responsePayload.sub);
-      console.log("Full Name: " + responsePayload.name);
-      console.log("Given Name: " + responsePayload.given_name);
-      console.log("Family Name: " + responsePayload.family_name);
-      console.log("Image URL: " + responsePayload.picture);
-      console.log("Email: " + responsePayload.email);
-    }
-    const onload = function () {
-      google.accounts.id.initialize({
-        client_id: "1054045062799-s66i1vgtcg29cqlevk17i6lgm1htc9e4.apps.googleusercontent.com",
-        callback: handleCredentialResponse,
-      });
-      google.accounts.id.renderButton(document.getElementById("buttonDiv"), { theme: "outline", size: "large" });
-      google.accounts.id.prompt();
-    };
-
-    onload();
-  }, []);
-
   return (
     <>
       <AppBar color="primary" position="static">
@@ -207,19 +188,20 @@ export default function Nav() {
           </IconButton>
           <Link href="/">
             <a>
-              <Image src={youtubeLogo} width={120} height={27} alt="YouTube Logo" />
+              <Image onClick={clearSearch} src={youtubeLogo} width={120} height={27} alt="YouTube Logo" />
             </a>
           </Link>
           <SearchWrapper>
             <Search onSubmit={submitSearch} action="" sx={{ display: "flex", cursor: "pointer" }}>
-              <StyledInputBase onChange={handleSearch} fullWidth={true} placeholder="Search…" inputProps={{ "aria-label": "search" }} />
+              <StyledInputBase onChange={handleSearch} value={searchTerm} fullWidth={true} placeholder="Search…" inputProps={{ "aria-label": "search" }} />
               <SearchIconWrapper>
+                {searchTerm !== "" ? <CloseIcon onClick={clearSearch} sx={{ marginRight: "10px", opacity: "0.5" }} /> : ""}
                 <SearchIcon onClick={submitSearch} />
               </SearchIconWrapper>
             </Search>
           </SearchWrapper>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <div id="buttonDiv"></div>
+            <Login />
           </Box>
         </Toolbar>
       </AppBar>
