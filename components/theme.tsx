@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material/styles";
+import { grey } from "@mui/material/colors";
 
 // Theme to override default theme
 const Theme = createTheme({
@@ -8,6 +9,9 @@ const Theme = createTheme({
     },
     secondary: {
       main: "#FF0000",
+    },
+    info: {
+      main: grey[500],
     },
   },
   components: {
@@ -22,6 +26,15 @@ const Theme = createTheme({
         },
       },
     },
+    MuiInputBase: {
+      styleOverrides: {
+        // Name of the slot
+        root: {
+          // Some CSS
+          // borderBottom: `1px solid ${grey[500]}`
+        },
+      },
+    }
   },
 });
 
