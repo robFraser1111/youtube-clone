@@ -36,6 +36,7 @@ const Search = styled("form")(({ theme }) => ({
   margin: "0 auto",
   width: "100%",
   borderRadius: theme.shape.borderRadius,
+  transition: "0.2s",
   backgroundColor: alpha(theme.palette.common.white, 0.15),
   "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
@@ -45,7 +46,7 @@ const Search = styled("form")(({ theme }) => ({
   },
 }));
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
+const SearchIconWrapper = styled("div")(() => ({
   // padding: theme.spacing(0, 2),
   padding: "8px 16px",
   // height: "100%",
